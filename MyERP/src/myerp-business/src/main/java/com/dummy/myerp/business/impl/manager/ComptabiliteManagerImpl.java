@@ -1,6 +1,7 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -133,6 +134,19 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         }
 
         // TODO ===== RG_Compta_5 : Format et contenu de la référence
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        String refYear= df.format(pEcritureComptable.getDate());
+        if(!refYear.equals(pEcritureComptable.getReference().substring(3,7)))
+        {
+        	throw new FunctionalException(
+                    "La référence de l'écriture comptable doit contenir l'année de la date de l'écriture.");
+        }
+        
+        if(!pEcritureComptable.getJournal().getCode().equals(pEcritureComptable.getReference().substring(0, 2)))
+        {
+        	throw new FunctionalException(
+                    "La référence de l'écriture comptable doit contenir le code du journal dans lequel elle figure.");
+        }
         // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
     }
 

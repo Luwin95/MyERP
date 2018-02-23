@@ -1,6 +1,7 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.jupiter.api.Assertions;
@@ -24,6 +25,11 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Libelle");
+        
+        //Création de la référence
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        String refYear= df.format(vEcritureComptable.getDate());
+        vEcritureComptable.setReference(vEcritureComptable.getJournal().getCode()+"-"+refYear+"/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                                                                                  null, new BigDecimal(123),
                                                                                  null));
@@ -75,6 +81,51 @@ public class ComptabiliteManagerImplTest {
             vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                                                                                      null, new BigDecimal(123),
                                                                                      null));
+            manager.checkEcritureComptableUnit(vEcritureComptable);
+    	});
+    }
+    
+    @Test
+    public void checkEcritureComptableUnitRG5YearError() throws Exception {
+    	Assertions.assertThrows(FunctionalException.class, () ->{
+    		EcritureComptable vEcritureComptable;
+            vEcritureComptable = new EcritureComptable();
+            vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+            vEcritureComptable.setDate(new Date());
+            vEcritureComptable.setLibelle("Libelle");
+            
+            //Création de la référence
+            String refYear= "0000";
+            vEcritureComptable.setReference(vEcritureComptable.getJournal().getCode()+"-"+refYear+"/00001");
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                                                                                     null, new BigDecimal(123),
+                                                                                     null));
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                                                                                     null, null,
+                                                                                     new BigDecimal(123)));
+            manager.checkEcritureComptableUnit(vEcritureComptable);
+    	});
+    }
+    
+    @Test
+    public void checkEcritureComptableUnitRG5JournalCodeError() throws Exception {
+    	Assertions.assertThrows(FunctionalException.class, () ->{
+    		EcritureComptable vEcritureComptable;
+            vEcritureComptable = new EcritureComptable();
+            vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+            vEcritureComptable.setDate(new Date());
+            vEcritureComptable.setLibelle("Libelle");
+            
+            //Création de la référence
+            SimpleDateFormat df = new SimpleDateFormat("yyyy");
+            String refYear= df.format(vEcritureComptable.getDate());
+            vEcritureComptable.setReference("BD"+"-"+refYear+"/00001");
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                                                                                     null, new BigDecimal(123),
+                                                                                     null));
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                                                                                     null, null,
+                                                                                     new BigDecimal(123)));
             manager.checkEcritureComptableUnit(vEcritureComptable);
     	});
     }
