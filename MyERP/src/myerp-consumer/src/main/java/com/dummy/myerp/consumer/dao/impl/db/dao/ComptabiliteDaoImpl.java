@@ -12,12 +12,14 @@ import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.CompteComptab
 import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.EcritureComptableRM;
 import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.JournalComptableRM;
 import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.LigneEcritureComptableRM;
+import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.SequenceEcritureComptableRM;
 import com.dummy.myerp.consumer.db.AbstractDbConsumer;
 import com.dummy.myerp.consumer.db.DataSourcesEnum;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
 
@@ -74,7 +76,20 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         List<JournalComptable> vList = vJdbcTemplate.query(SQLgetListJournalComptable, vRM);
         return vList;
     }
-
+    // ==================== SequenceEcritureComptable - GET ====================
+    private static String SQLgetLastSequenceEcritureComptable;
+    public void setSQLgetLastSequenceEcritureComptable(String pSQLgetLastSequenceEcritureComptable)
+    {
+    	SQLgetLastSequenceEcritureComptable = pSQLgetLastSequenceEcritureComptable;
+    }
+    @Override
+    public SequenceEcritureComptable getLastSequenceOfYear(int year) {
+    	JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(DataSourcesEnum.MYERP));
+    	SequenceEcritureComptableRM vRM = new SequenceEcritureComptableRM();
+    	SequenceEcritureComptable vBean = vJdbcTemplate.queryForObject(SQLgetLastSequenceEcritureComptable, vRM);
+    	return vBean;
+    }
+    
     // ==================== EcritureComptable - GET ====================
 
     /** SQLgetListEcritureComptable */
@@ -205,7 +220,38 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
             vJdbcTemplate.update(SQLinsertListLigneEcritureComptable, vSqlParams);
         }
     }
+    
+ // ==================== SequenceEcritureComptable - INSERT ====================
+    private static String SQLinsertSequenceEcritureComptable;
+    public void setSQLinsertSequenceEcritureComptable(String pSQLinsertSequenceEcritureCOmptable)
+    {
+    	SQLinsertSequenceEcritureComptable = pSQLinsertSequenceEcritureCOmptable;
+    }
 
+    @Override
+    public void insertSequenceEcritureComptable(
+    		SequenceEcritureComptable pSequenceEcritureComptable) {
+    	NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
+        vSqlParams.addValue("annee", pSequenceEcritureComptable.getAnnee());
+        vSqlParams.addValue("derniere_valeur", pSequenceEcritureComptable.getDerniereValeur());
+        vJdbcTemplate.update(SQLinsertSequenceEcritureComptable, vSqlParams);
+    }
+    
+    private static String SQLupdateSequenceEcritureComptable;
+    public void setSQLupdateSequenceEcritureComptable(String pSQLupdateSequenceEcritureCOmptable)
+    {
+    	SQLinsertSequenceEcritureComptable = pSQLupdateSequenceEcritureCOmptable;
+    }
+    
+    @Override
+    public void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable) {
+    	NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
+        vSqlParams.addValue("annee", pSequenceEcritureComptable.getAnnee());
+        vSqlParams.addValue("derniere_valeur", pSequenceEcritureComptable.getDerniereValeur());
+        vJdbcTemplate.update(SQLinsertSequenceEcritureComptable, vSqlParams);
+    }
 
     // ==================== EcritureComptable - UPDATE ====================
 

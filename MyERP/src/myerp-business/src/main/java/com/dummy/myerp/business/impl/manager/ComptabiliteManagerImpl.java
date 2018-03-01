@@ -16,6 +16,7 @@ import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
@@ -67,14 +68,43 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         /* Le principe :
                 1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
                     (table sequence_ecriture_comptable)
+                    */
+    	SimpleDateFormat df = new SimpleDateFormat("yyyy");
+    	int year = Integer.parseInt(df.format(pEcritureComptable.getDate()));
+    	SequenceEcritureComptable sequenceEcritureComptable = getDaoProxy().getComptabiliteDao().getLastSequenceOfYear(year);
+    	/*
                 2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
                         1. Utiliser le numéro 1.
                     * Sinon :
                         1. Utiliser la dernière valeur + 1
+         */
+    	int valToUse;
+    	if(sequenceEcritureComptable!=null) {
+    		valToUse = sequenceEcritureComptable.getDerniereValeur()+1;
+    	}else {
+    		valToUse = 1;
+    	}
+    	SequenceEcritureComptable vSequenceEcritureComptable = new SequenceEcritureComptable();
+    	vSequenceEcritureComptable.setAnnee(year);
+    	vSequenceEcritureComptable.setDerniereValeur(valToUse);
+    	/*
                 3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)
+                */
+    	String refCalc = ""+valToUse;
+    	pEcritureComptable.setReference(pEcritureComptable.getReference().substring(0,pEcritureComptable.getReference().length()-refCalc.length())+refCalc);
+    	getDaoProxy().getComptabiliteDao().updateEcritureComptable(pEcritureComptable);
+    	/*
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
          */
+    	if(valToUse == 1)
+    	{
+    		getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(vSequenceEcritureComptable);
+    	}
+    	if(valToUse>1)
+    	{
+    		getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(vSequenceEcritureComptable);
+    	}
     }
 
     /**
