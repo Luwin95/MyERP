@@ -71,7 +71,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                     */
     	SimpleDateFormat df = new SimpleDateFormat("yyyy");
     	int year = Integer.parseInt(df.format(pEcritureComptable.getDate()));
-    	SequenceEcritureComptable sequenceEcritureComptable = getDaoProxy().getComptabiliteDao().getLastSequenceOfYear(year);
+    	SequenceEcritureComptable sequenceEcritureComptable = getDaoProxy().getComptabiliteDao().getLastSequenceOfYear(year, pEcritureComptable.getJournal().getCode());
     	/*
                 2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
                         1. Utiliser le numéro 1.
@@ -99,11 +99,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
          */
     	if(valToUse == 1)
     	{
-    		getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(vSequenceEcritureComptable);
+    		getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(vSequenceEcritureComptable, pEcritureComptable.getJournal().getCode());
     	}
     	if(valToUse>1)
     	{
-    		getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(vSequenceEcritureComptable);
+    		getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(vSequenceEcritureComptable, pEcritureComptable.getJournal().getCode());
     	}
     }
 

@@ -27,21 +27,6 @@ public interface ComptabiliteDao {
      */
     List<JournalComptable> getListJournalComptable();
     
-    // ==================== SequenceEcritureComptable ====================
-    SequenceEcritureComptable getLastSequenceOfYear(int year);
-    
-    /**
-     * Insère la séquence en base
-     * @param pSequenceEcritureComptable
-     */
-    void insertSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable);
-    
-    /**
-     * Met à jour en base l'objet séquence en paramètre
-     * @param pSequenceEcritureComptable
-     */
-    void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable);
-    
     // ==================== EcritureComptable ====================
 
     /**
@@ -95,4 +80,19 @@ public interface ComptabiliteDao {
      * @param pId l'id de l'écriture
      */
     void deleteEcritureComptable(Integer pId);
+    
+    // ==================== SequenceEcritureComptable ====================
+    SequenceEcritureComptable getLastSequenceOfYear(int year, String journalCode);
+    
+    /**
+     * Insère la séquence en base
+     * @param pSequenceEcritureComptable
+     */
+    void insertSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String journalCode);
+    
+    /**
+     * Met à jour en base l'objet séquence en paramètre
+     * @param pSequenceEcritureComptable
+     */
+    void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String journalCode);
 }
