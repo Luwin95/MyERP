@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
+import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.NotFoundException;
 import com.dummy.myerp.testconsumer.consumer.ConsumerTestCase;
@@ -114,5 +116,32 @@ public class ComptabiliteDaoImplTest extends ConsumerTestCase {
 			assertNull(sequence);
 			SequenceEcritureComptable sequence2 = getDaoProxy().getComptabiliteDao().getLastSequenceOfYear(2016,"A");
 			assertNull(sequence2);
+	}
+	
+	@Test
+	public void insertEcritureComptable() {
+		EcritureComptable vEcritureComptable;
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
+        
+        //Création de la référence
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        String refYear= df.format(vEcritureComptable.getDate());
+        vEcritureComptable.setReference(vEcritureComptable.getJournal().getCode()+"-"+refYear+"/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
+                                                                                 null, new BigDecimal(123),
+                                                                                 null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),
+                                                                                 null, null,
+                                                                                 new BigDecimal(123)));
+        getDaoProxy().getComptabiliteDao().insertEcritureComptable(vEcritureComptable);
+        assertNotNull(vEcritureComptable.getId());
+	}
+	
+	public void insertSequenceEcritureComptable() {
+		SequenceEcritureComptable sequence = new SequenceEcritureComptable();
+		
 	}
 }
