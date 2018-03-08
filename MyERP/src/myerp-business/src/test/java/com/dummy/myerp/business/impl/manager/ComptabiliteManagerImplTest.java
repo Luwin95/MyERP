@@ -133,25 +133,94 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
     	});
     }
     
-//    @Test
-//    public void addReference() throws Exception {
-//    	EcritureComptable vEcritureComptable;
-//        vEcritureComptable = new EcritureComptable();
-//        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-//        vEcritureComptable.setDate(new Date());
-//        vEcritureComptable.setLibelle("Libelle");
-//        
-//        //Création de la référence
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy");
-//        String refYear= df.format(vEcritureComptable.getDate());
-//        vEcritureComptable.setReference("AC"+"-"+refYear+"/00001");
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-//                                                                                 null, new BigDecimal(123),
-//                                                                                 null));
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-//                                                                                 null, null,
-//                                                                                 new BigDecimal(123)));
-//        manager.addReference(vEcritureComptable);
-//        assertEquals("AC-2018/00002", vEcritureComptable.getReference());
-//    }
+    @Test
+    public void addReferenceUnit() throws Exception {
+    	EcritureComptable vEcritureComptable;
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
+        
+        //Création de la référence
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        String refYear= df.format(vEcritureComptable.getDate());
+        vEcritureComptable.setReference("AC"+"-"+refYear+"/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                                                                                 null, new BigDecimal(123),
+                                                                                 null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                                                                                 null, null,
+                                                                                 new BigDecimal(123)));
+        manager.addReference(vEcritureComptable);
+        assertEquals("AC-2018/00002", vEcritureComptable.getReference());
+    }
+    
+    @Test
+    public void checkEcritureComptableContextUnit() throws Exception {
+    		EcritureComptable vEcritureComptable;
+            vEcritureComptable = new EcritureComptable();
+            vEcritureComptable.setId(12000);
+            vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+            vEcritureComptable.setDate(new Date());
+            vEcritureComptable.setLibelle("Libelle");
+            
+            //Création de la référence
+            SimpleDateFormat df = new SimpleDateFormat("yyyy");
+            String refYear= df.format(vEcritureComptable.getDate());
+            vEcritureComptable.setReference("AC"+"-"+refYear+"/00001");
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                                                                                     null, new BigDecimal(123),
+                                                                                     null));
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+            																		 null, null,
+            																		 new BigDecimal(123)));
+            manager.checkEcritureComptableContext(vEcritureComptable);
+    }
+    
+    @Test
+    public void checkEcritureComptableContextUnitRG6NewEcritureException() {
+    	Assertions.assertThrows(FunctionalException.class, () -> {
+    		EcritureComptable vEcritureComptable;
+            vEcritureComptable = new EcritureComptable();
+            vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+            vEcritureComptable.setDate(new Date());
+            vEcritureComptable.setLibelle("Libelle");
+            
+            //Création de la référence
+            SimpleDateFormat df = new SimpleDateFormat("yyyy");
+            String refYear= df.format(vEcritureComptable.getDate());
+            vEcritureComptable.setReference("AC"+"-"+refYear+"/00001");
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                                                                                     null, new BigDecimal(123),
+                                                                                     null));
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+            																		 null, null,
+            																		 new BigDecimal(123)));
+            manager.checkEcritureComptableContext(vEcritureComptable);
+    	});
+    }
+    
+    @Test
+    public void checkEcritureComptableContextUnitRG6ExistingEcritureException() {
+    	Assertions.assertThrows(FunctionalException.class, () -> {
+    		EcritureComptable vEcritureComptable;
+    		//TODO CREE une ecriture existante
+            vEcritureComptable = new EcritureComptable();
+            vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+            vEcritureComptable.setDate(new Date());
+            vEcritureComptable.setLibelle("Libelle");
+            
+            //Création de la référence
+            SimpleDateFormat df = new SimpleDateFormat("yyyy");
+            String refYear= df.format(vEcritureComptable.getDate());
+            vEcritureComptable.setReference("AC"+"-"+refYear+"/00001");
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                                                                                     null, new BigDecimal(123),
+                                                                                     null));
+            vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+            																		 null, null,
+            																		 new BigDecimal(123)));
+            manager.checkEcritureComptableContext(vEcritureComptable);
+    	});
+    }
 }

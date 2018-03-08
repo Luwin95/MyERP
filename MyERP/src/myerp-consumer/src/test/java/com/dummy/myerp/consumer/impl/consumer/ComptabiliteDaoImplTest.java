@@ -140,8 +140,50 @@ public class ComptabiliteDaoImplTest extends ConsumerTestCase {
         assertNotNull(vEcritureComptable.getId());
 	}
 	
+	@Test
 	public void insertSequenceEcritureComptable() {
-		SequenceEcritureComptable sequence = new SequenceEcritureComptable();
+		try {
+			SequenceEcritureComptable sequence = new SequenceEcritureComptable();
+			sequence.setAnnee(2016);
+			sequence.setDerniereValeur(4);
+			getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(sequence, "AC");
+		}catch(Exception e) {
+			fail("Erreur lors de l'insertion de la séquence");
+		}
+	}
+	
+	@Test
+	public void updateSequenceEcritureComptable() {
+		try {
+			SequenceEcritureComptable sequence = getDaoProxy().getComptabiliteDao().getLastSequenceOfYear(2016, "AC");
+			sequence.setDerniereValeur(sequence.getDerniereValeur()+1);
+			getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(sequence, "AC");
+		}catch(Exception e) {
+			fail("Erreur lors de la mise à jour de la séquence");
+		}
 		
+	}
+	
+	@Test
+	public void updateEcritureComptable() {
+		try {
+			EcritureComptable vEcritureComptable = getDaoProxy().getComptabiliteDao().getEcritureComptable(-1);
+			vEcritureComptable.setLibelle("Hello world");
+			getDaoProxy().getComptabiliteDao().updateEcritureComptable(vEcritureComptable);
+		}catch(Exception e) {
+			fail("Erreur lors de la mise à jour de l'écriture comptable");
+		}
+	}
+	
+	@Test
+	public void deleteEcritureComptable()
+	{
+		try {
+			getDaoProxy().getComptabiliteDao().deleteEcritureComptable(-1);
+		}catch(Exception e)
+		{
+			
+			fail("Erreur lors de la suppression de l'écriture comptable");
+		}
 	}
 }
