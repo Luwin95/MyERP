@@ -2,8 +2,6 @@ package com.dummy.myerp.model.bean.comptabilite;
 
 import java.util.List;
 import java.util.Objects;
-
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,9 +21,6 @@ public class JournalComptable {
     @NotNull
     @Size(min = 1, max = 150)
     private String libelle;
-    
-    @Valid
-    private List<SequenceEcritureComptable> sequenceEcritureComptables;
 
 
     // ==================== Constructeurs ====================
@@ -60,9 +55,6 @@ public class JournalComptable {
     public void setLibelle(String pLibelle) {
         libelle = pLibelle;
     }
-    public List<SequenceEcritureComptable> getSequenceEcritureComptables() {
-		return sequenceEcritureComptables;
-	}
 
 	// ==================== Méthodes ====================
     @Override
