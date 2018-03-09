@@ -82,7 +82,7 @@ public class ComptabiliteDaoImplTest extends ConsumerTestCase {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			Date date = sdf.parse("28-12-2016");
 			assertEquals(date, ecriture.getDate());
-			assertEquals("Cartouches d’imprimante", ecriture.getLibelle());
+			assertEquals("TMA Appli Yyy", ecriture.getLibelle());
 			assertNotNull(ecriture.getListLigneEcriture());
 			assertTrue(ecriture.getListLigneEcriture().size()>2);
 		}catch(Exception e){
