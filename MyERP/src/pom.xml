@@ -56,6 +56,14 @@
         <spring.version>4.3.7.RELEASE</spring.version>
         <junit-jupiter.version>5.1.0</junit-jupiter.version>
         <junit-platform.version>1.1.0</junit-platform.version>
+        <sonar.sources>src/main</sonar.sources>
+        <sonar.tests>src/test</sonar.tests>
+        <runSuite>**/*Suite.class</runSuite>
+		<!-- Sonar-JaCoCo properties -->
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.language>java</sonar.language>
     </properties>
 
 
@@ -96,6 +104,17 @@
         <profile>
             <id>test-consumer</id>
         </profile>
+        <profile>
+	       <id>sonar</id>
+	       <activation>
+	            <activeByDefault>true</activeByDefault>
+	       </activation>
+	       <properties>
+	           <sonar.host.url>
+	                http://localhost:9000
+	           </sonar.host.url>
+	       </properties>
+		</profile>
     </profiles>
 
 
@@ -300,6 +319,25 @@
     <!-- Build -->
     <!-- =============================================================== -->
     <build>
+    	<plugins>
+    		 <plugin>
+	            <groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.0</version>
+				<configuration>
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+					<append>true</append>
+				</configuration>
+				<executions>
+					<execution>
+						<id>agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+		     </plugin>
+    	</plugins>
         <!-- =============================================================== -->
         <!-- pluginManagement -->
         <!-- =============================================================== -->
@@ -469,6 +507,9 @@
                 <version>2.19.1</version>
                 <configuration>
                     <linkXRef>false</linkXRef>
+                    <includes>
+						<include>${runSuite}</include>
+					</includes>
                 </configuration>
                 <reportSets>
                     <!-- reportSet par défaut, exécuté dans tous les modules (non-aggregate reports) -->

@@ -1,5 +1,11 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
+import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +31,24 @@ public class JournalComptableTest {
 	
 	@Test
 	public void getByCode() {
-		
+		try {
+			JournalComptable vJournal = JournalComptable.getByCode(vListeJournalComptable, "AA");
+			assertNotNull(vJournal);
+			assertTrue(vJournal.getCode().equals("AA"));
+			assertEquals("journal test 1", vJournal.getLibelle());
+		}catch(Exception e) {
+			fail("Le compte comptable n'a pas été trouvé dans la liste");
+		}
 	}
 	
-
+	@Test
+	public void getByCodeNotFound() {
+		try {
+			JournalComptable vJournal = JournalComptable.getByCode(vListeJournalComptable, "AF");
+			assertNull(vJournal);
+			
+		}catch(Exception e) {
+			fail("Le compte comptable a été trouvé dans la liste");
+		}
+	}
 }

@@ -2,24 +2,21 @@ package com.dummy.myerp.consumer.impl.consumer;
 
 
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
-import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.NotFoundException;
 import com.dummy.myerp.testconsumer.consumer.ConsumerTestCase;
@@ -30,21 +27,21 @@ public class ComptabiliteDaoImplTest extends ConsumerTestCase {
 	public void getListCompteComptable(){
 		List<CompteComptable> comptes = getDaoProxy().getComptabiliteDao().getListCompteComptable();
 		assertNotNull(comptes);
-		assertEquals(7, comptes.size());
+		assertTrue(comptes.size()>0);
 	}
 	
 	@Test
 	public void getListJournalComptable() {
 		List<JournalComptable> journaux = getDaoProxy().getComptabiliteDao().getListJournalComptable();
 		assertNotNull(journaux);
-		assertEquals(4, journaux.size());
+		assertTrue(journaux.size()>0);
 	}
 	
 	@Test
 	public void getListEcritureComptable() {
 		List<EcritureComptable> ecritures = getDaoProxy().getComptabiliteDao().getListEcritureComptable();
 		assertNotNull(ecritures);
-//		assertEquals(5, ecritures.size());
+		assertTrue(ecritures.size()>0);
 	}
 	
 	@Test
