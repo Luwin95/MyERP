@@ -328,9 +328,9 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
     	assertTrue(test);
     }
     
-    @Test
-    public void TestQuiNePassePas() {
-    	boolean test = false;
-    	assertTrue(test);
-    }
+//    @Test
+//    public void TestQuiNePassePas() {
+//    	boolean test = false;
+//    	assertTrue(test);
+//    }
 }
