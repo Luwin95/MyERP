@@ -330,7 +330,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
     
     @Test
     public void TestQuiNePassePas() {
-    	boolean test = true;
+    	boolean test = false;
     	assertTrue(test);
     }
 }
