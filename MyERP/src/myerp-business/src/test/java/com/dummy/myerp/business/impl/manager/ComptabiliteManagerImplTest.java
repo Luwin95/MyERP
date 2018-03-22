@@ -1,6 +1,7 @@
 package com.dummy.myerp.business.impl.manager;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -320,4 +321,16 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 			fail("Erreur lors de la mise à jour de l'écriture comptable");
 		}
     }
+    
+    @Test
+    public void TestQuiPasse() {
+    	boolean test = true;
+    	assertTrue(test);
+    }
+    
+//    @Test
+//    public void TestQuiNePassePas() {
+//    	boolean test = false;
+//    	assertTrue(test);
+//    }
 }
